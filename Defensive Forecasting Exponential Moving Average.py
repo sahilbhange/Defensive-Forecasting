@@ -33,11 +33,12 @@ w_old=0.5
 z_old=0.5
 
 
-sigma_val = 0.06
+#sigma_val = 0.06
 #sigma_val = 6*(0.01)**2
-#sigma_val = 4*(0.01)**2
+sigma_val = 4*(0.01)**2
 #sigma_val = 3*(0.01)**2
-#
+
+# Calculate W and Z values for Stimulas
 for i, row in enumerate(data_set.values):
     my_list_w.append(w_old)
     my_list_z.append(z_old)
@@ -53,8 +54,8 @@ func_list=[]
 math_exprs_list=[]
 equation_list=[]
 
-#for k in range(199,0,-100):
- #   print(k)
+# Create exponential moving average function for 1000 stimulas
+
 for j in range(999,0,-1):     
     
     p_index = 'p_' + str(j-1)
@@ -102,6 +103,7 @@ my_list_p.append(0.5)
 
 p_0 = 0.5
 
+# Calculate P values by solving exponential moving average function equation using Bisect method
 for i in range(0,999):
     p_val='p_' + str(i+1)
     exec(ema_func_list[i])
