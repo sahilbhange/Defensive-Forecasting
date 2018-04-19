@@ -33,18 +33,17 @@ w_old=0.5
 z_old=0.5
 
 
-#sigma_val = 0.06
+sigma_val = 0.1
 #sigma_val = 6*(0.01)**2
-sigma_val = 4*(0.01)**2
+#sigma_val = 50*(0.01)**2
 #sigma_val = 3*(0.01)**2
-
-# Calculate W and Z values for Stimulas
+#
 for i, row in enumerate(data_set.values):
     my_list_w.append(w_old)
     my_list_z.append(z_old)
     my_list_y.append(data_set[i])
     w_current=((1/5)*(data_set[i])+(4/5)*w_old)
-    z_current=((1/10)*(data_set[i])+(9/10)*z_old)
+    z_current=((1/5)*(data_set[i])+(4/5)*z_old)
     w_old=w_current
     z_old=z_current
 
@@ -54,8 +53,8 @@ func_list=[]
 math_exprs_list=[]
 equation_list=[]
 
-# Create exponential moving average function for 1000 stimulas
-
+#for k in range(199,0,-100):
+ #   print(k)
 for j in range(999,0,-1):     
     
     p_index = 'p_' + str(j-1)
@@ -103,7 +102,6 @@ my_list_p.append(0.5)
 
 p_0 = 0.5
 
-# Calculate P values by solving exponential moving average function equation using Bisect method
 for i in range(0,999):
     p_val='p_' + str(i+1)
     exec(ema_func_list[i])
@@ -129,20 +127,24 @@ for i in range(0,999):
 len(my_list_w)
 
 
-final_result_03.to_csv('final_result_950_no_W_3.csv')
+final_result.to_csv('EMA_Calculated_P_Values.csv')
 
+final_result = pd.DataFrame({'Y':my_list_y,'W':my_list_w,'Z':my_list_z,'P':my_list_p,'P_bayesian':data_set_bayesian,'P_subject':data_set_subject})
+
+
+len(data_set_subject)
 
 
 #Brier score for error comparison between calculated P Values and Y "Stimulas"
-sum((final_result_03['Y'] - final_result_03['P'])**2)
+sum((final_result['Y'] - final_result['P'])**2)
 
 
 #Brier score for error comparison between calculated P Values and Subject Y values
-sum((final_result_03['Y'] - final_result_03['P_subject'])**2)
+sum((final_result['Y'] - final_result['P_subject'])**2)
 
 
 #Brier score for error comparison between calculated P Values and Bayesian P values
-sum((final_result_03['Y'] - final_result_03['P_bayesian'])**2)
+sum((final_result['Y'] - final_result['P_bayesian'])**2)
 
 
 
