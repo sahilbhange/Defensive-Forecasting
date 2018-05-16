@@ -5,7 +5,6 @@ Created on Sat Mar 15 16:40:59 2018
 @author: Sandman
 """
 
-
 """
 """
 
@@ -33,9 +32,7 @@ while y < 20001:
     data_set_bayesian=df["P_Bayesian_model"]#.head(1000)
     data_set_subject = []
     data_set_subject=df["4"]#.head(1000)
-    #x=y
-    #y=y+1000
-    #df=df.append(df)
+
 
     my_list_w=[]
     my_list_z=[]
@@ -43,17 +40,18 @@ while y < 20001:
     w_old=0.5
     z_old=0.5
 
-    sigma_val = 1
+    # Change the value of sigma to reduce the Brier Score error
+    #sigma_val = 1  
     #sigma_val = 6*(0.01)**2
-    #sigma_val = 4*(0.01)**2
+    sigma_val = 4*(0.01)**2
     #sigma_val = 3*(0.01)**2
-#
+    
     for i, row in enumerate(data_set.values):
         my_list_w.append(w_old)
         my_list_z.append(z_old)
         my_list_y.append(data_set[i])
-        w_current=((1/5)*(data_set[i])+(4/5)*w_old)
-        z_current=((1/30)*(data_set[i])+(29/30)*z_old)
+        w_current=((1/5)*(data_set[i])+(4/5)*w_old)     # Take last 5 ball appearances into account to calculate next ball probability
+        z_current=((1/10)*(data_set[i])+(9/10)*z_old)   # Take last 10 ball appearances into account to calculate next ball probability
         w_old=w_current
         z_old=z_current
 
@@ -63,7 +61,7 @@ while y < 20001:
     math_exprs_list=[]
     equation_list=[]
 
-    for j in range(999,0,-1):
+    for j in range(999,0,-1):    # Consider first 1000 sequences for the exponential moving averages
         p_index = 'p_' + str(j-1)    
         funct = 'def func' + "_" + str(j) + "(x):" 
         ret   = '    return'
@@ -93,10 +91,6 @@ while y < 20001:
         func_list.append(equation)
         math_exprs = first+ math_exprs_2
         math_exprs_list.append(math_exprs)
-        #print("Created func_",j)
-
-        #x=0
-        
     
 #exec(ema_func_list[1])
 
@@ -134,45 +128,20 @@ while y < 20001:
  
     final_result2=final_result2.append(final_result)    
     x = y 
-    y = y +1000    
+    y = y +1000    # increament counter by 1000 to take next 1000 sequences
   
-    
-    
-final_result2=[]    
 
-final_result_sigma_01 = final_result2    
-final_result_sigma_10 = final_result2
-final_result_sigma_04 = final_result2
 
 #sigma =1 and z = 1/20
 final_result_sigma_04 = final_result2
 
-final_result_sigma_01_30 =  final_result2
-
-len(final_result)
-len(final_result_sigma_01_30)
-
-
 #Brier score for error comparison between calculated P Values and Y "Stimulas"
 sum((final_result_sigma_04['Y'] - final_result_sigma_04['P'])**2)
-sum((final_result_sigma_10['Y'] - final_result_sigma_10['P'])**2)
-sum((final_result_sigma_01['Y'] - final_result_sigma_01['P'])**2)
-
-
-sum((final_result_sigma_01_30['Y'] - final_result_sigma_01_30['P'])**2)
-
-#z = (1/9)
-
-sum((final_result_sigma_01_20['Y'] - final_result_sigma_01_20['P'])**2)
-
-
+#sum((final_result_sigma_10['Y'] - final_result_sigma_10['P'])**2)
+#sum((final_result_sigma_01['Y'] - final_result_sigma_01['P'])**2)
 
 #Brier score for error comparison between calculated P Values and Subject Y values
 sum((final_result2['Y'] - final_result2['P_subject'])**2)
 
-
 #Brier score for error comparison between calculated P Values and Bayesian P values
 sum((final_result2['Y'] - final_result2['P_bayesian'])**2)
-
-optimize.bisect()
-
