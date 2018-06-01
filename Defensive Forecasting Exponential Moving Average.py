@@ -9,7 +9,6 @@ Created on Sat Mar 15 16:40:59 2018
 """
 
 import pandas as pd
-from scipy.optimize import minimize_scalar
 import math
 from scipy import optimize
 
