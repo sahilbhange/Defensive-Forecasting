@@ -50,8 +50,8 @@ while y < 20001:
         my_list_w.append(w_old)
         my_list_z.append(z_old)
         my_list_y.append(data_set[i])
-        w_current=((1/5)*(data_set[i])+(4/5)*w_old)     # Take last 5 ball appearances into account to calculate next ball probability
-        z_current=((1/10)*(data_set[i])+(9/10)*z_old)   # Take last 10 ball appearances into account to calculate next ball probability
+        w_current=((1/5)*(data_set[i])+(4/5)*w_old)     #Short Memory # Take last 5 ball appearances into account to calculate next ball probability
+        z_current=((1/10)*(data_set[i])+(9/10)*z_old)   #Long Memory # Take last 10 ball appearances into account to calculate next ball probability
         w_old=w_current
         z_old=z_current
 
