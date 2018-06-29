@@ -13,25 +13,24 @@ import math
 from scipy import optimize
 
 
-df_complete=pd.read_csv("Data1.txt",encoding='utf-8',delimiter=' ',header=None, names=["0","1","2","Stimulus","4","5","6","7","P_Bayesian_model","9","10","11","12"])
+Experiment_data = pd.read_csv("C:\\Users\\Sandman\\Desktop\\Prof Glenn Shafer\\Defensive Forecasting\\Data1.txt",encoding='utf-8',delimiter=' ',header=None, names=["0","1","2","Stimulus","4","5","6","7","P_Bayesian_model","9","10","11","12"])
 
-df=[]
+memory_df=[]
 
-final_result2 = pd.DataFrame()
+complete_data = pd.DataFrame()
 
 x=0
 y=1000
-while y < 20001:
+while y < 1001:
     print(y)
-    df = df_complete[x:y]
-    df = df.reset_index()
+    memory_df = Experiment_data[x:y]
+    memory_df = memory_df.reset_index()
     data_set=[]
-    data_set=df["Stimulus"]#.head(1000)
+    data_set=memory_df["Stimulus"]#.head(1000)
     data_set_bayesian = []
-    data_set_bayesian=df["P_Bayesian_model"]#.head(1000)
+    data_set_bayesian=memory_df["P_Bayesian_model"]#.head(1000)
     data_set_subject = []
-    data_set_subject=df["4"]#.head(1000)
-
+    data_set_subject=memory_df["4"]#.head(1000)
 
     my_list_w=[]
     my_list_z=[]
@@ -68,8 +67,8 @@ while y < 20001:
         #w_val = ((new_df["W"][j] - new_df["W"][j-1])**2/sigma_val)
         z_val = ((new_df["Z"][j] - new_df["Z"][j-1])**2/sigma_val)
         y_p   = (new_df["Y"][j-1])
-        minus = '-'
-        star = '*'
+        minus = '-' # for subtraction in equation 
+        star = '*'  # for multiplication in equation
         math_exprs_2 = ''
         open_brace = '('
         close_brace = ')'
@@ -125,22 +124,24 @@ while y < 20001:
     
     final_result  = pd.DataFrame({'Y':my_list_y,'W':my_list_w,'Z':my_list_z,'P':my_list_p,'P_bayesian':data_set_bayesian,'P_subject':data_set_subject})
  
-    final_result2=final_result2.append(final_result)    
+    complete_data=complete_data.append(final_result)    
     x = y 
     y = y +1000    # increament counter by 1000 to take next 1000 sequences
   
 
 
 #sigma =1 and z = 1/20
-final_result_sigma_04 = final_result2
+final_result_sigma_04 = complete_data
+
+complete_data.head(100)
 
 #Brier score for error comparison between calculated P Values and Y "Stimulas"
-sum((final_result_sigma_04['Y'] - final_result_sigma_04['P'])**2)
+sum((complete_data['Y'] - complete_data['P'])**2)
 #sum((final_result_sigma_10['Y'] - final_result_sigma_10['P'])**2)
 #sum((final_result_sigma_01['Y'] - final_result_sigma_01['P'])**2)
 
 #Brier score for error comparison between calculated P Values and Subject Y values
-sum((final_result2['Y'] - final_result2['P_subject'])**2)
+sum((complete_data['Y'] - complete_data['P_subject'])**2)
 
 #Brier score for error comparison between calculated P Values and Bayesian P values
-sum((final_result2['Y'] - final_result2['P_bayesian'])**2)
+sum((complete_data['Y'] - complete_data['P_bayesian'])**2)
